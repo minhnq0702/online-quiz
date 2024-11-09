@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "leaderboard-service"
+		},
+		{
+			"path": "quiz-service"
+		},
+		{
+			"path": "answer-service"
+		}
+	],
+	"settings": {}
+}
