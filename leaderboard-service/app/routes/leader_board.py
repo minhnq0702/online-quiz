@@ -1,11 +1,14 @@
 import asyncio
+import logging
 from typing import List
 
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.dto.dto_leader_board import DtoCreateLeaderBoard
 from app.models.leader_board import LeaderBoard
 from app.routes import depends
+
+_logger = logging.getLogger("uvicorn")
 
 router = APIRouter()
 
@@ -53,8 +56,13 @@ async def websocket_endpoint(
         websocket (WebSocket): _description_
     """
     await websocket.accept()
-    while True:
-        print("[minhne]", f"{quiz_id}")
-        res = await leaderboard.find({}, {"_id": 0, "score": 1, "username": 1}).to_list()
-        await websocket.send_json(res)
-        await asyncio.sleep(5)  # Adjust the interval as needed
+    try:
+        while True:
+            print("[minhne]", f"{quiz_id}")
+            res = await leaderboard.find({}, {}).to_list()
+            pyres = [LeaderBoard(**rec) for rec in res]
+
+            await websocket.send_json([rec.model_dump() for rec in pyres])
+            await asyncio.sleep(5)  # Adjust the interval as needed
+    except WebSocketDisconnect:
+        _logger.info("client disconnect websocket")
