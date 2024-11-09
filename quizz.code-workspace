@@ -10,5 +10,7 @@
 			"path": "answer-service"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python.analysis.autoImportCompletions": true
+	}
 }
