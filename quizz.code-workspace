@@ -11,6 +11,9 @@
 		}
 	],
 	"settings": {
-		"python.analysis.autoImportCompletions": true
+		"python.analysis.autoImportCompletions": true,
+		"conventionalCommits.scopes": [
+			"leader-board"
+		]
 	}
 }
