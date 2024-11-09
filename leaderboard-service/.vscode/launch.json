@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "name": "Leaderboard",
+      "type": "debugpy",
+      "request": "launch",
+      "envFile": "${workspaceFolder}/app/.env",
+      "module": "uvicorn",
+      "args": ["app.main:app", "--reload"],
+      "cwd": "${workspaceFolder}",
+      "jinja": true
+    }
+  ]
+}
