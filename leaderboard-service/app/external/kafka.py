@@ -26,7 +26,7 @@ def init_consumer_client():
     consumer = AIOKafkaConsumer(
         'score_updates',
         bootstrap_servers=os.environ["KAFKA_BROKER_URL"],
-        group_id="leaderboard_service"
+        group_id="leaderboard_service",
     )
     return consumer
 
@@ -39,7 +39,10 @@ async def consume_messages(consumer: AIOKafkaConsumer, leaderboard_col: AsyncIOM
     try:
         async for message in consumer:
             try:
-                scored_answer: EventScore = json.loads(message.value.decode())
+                val = message.value
+                if val is None:
+                    continue
+                scored_answer: EventScore = json.loads(val.decode())
                 entry: DtoUpsertLeaderBoard = DtoUpsertLeaderBoard(
                     quiz_id=str(scored_answer["quiz_id"]),
                     user_id=str(scored_answer["user_id"]),
