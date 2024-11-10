@@ -22,11 +22,12 @@ class EventScore(TypedDict):
     score: float
 
 
-def init_consumer_client():
+def init_consumer_client(client_name="consumer-client"):
     consumer = AIOKafkaConsumer(
         'score_updates',
         bootstrap_servers=os.environ["KAFKA_BROKER_URL"],
         group_id="leaderboard_service",
+        client_id=client_name,
     )
     return consumer
 
@@ -52,6 +53,6 @@ async def consume_messages(consumer: AIOKafkaConsumer, leaderboard_col: AsyncIOM
             except Exception as e:
                 _logger.error(f"update score from kafka failed {e} at {traceback.format_exc()}")
             else:
-                _logger.info(f"update score for {entry.user_id} successfully")
+                _logger.info(f"{consumer._client._client_id} update score for {entry.user_id} successfully")
     finally:
         await consumer.stop()

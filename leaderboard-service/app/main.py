@@ -26,10 +26,26 @@ async def lifespan(_app: FastAPI):
 
     # FIXME: We can adjust the number of consumers based on the number of users joining the quiz AND the number of Kafka partitions.
     # !Ensure that each event containing an individual user's score uses the same user_id key to keep it in the same partition.
-    consumer_client = init_consumer_client()
+    # ! This is for test only. For production we should add a mechanism to spawn kafka consumer
+    consumer_client_1 = init_consumer_client(client_name="CS1")
+    consumer_client_2 = init_consumer_client(client_name="CS2")
+    consumer_client_3 = init_consumer_client(client_name="CS3")
 
-    asyncio.create_task(consume_messages(
-        consumer_client, _app.state.mongodb.get_collection("leaderboard")))
+    asyncio.gather(
+        asyncio.create_task(
+            consume_messages(consumer_client_1,
+                             _app.state.mongodb.get_collection("leaderboard")),
+        ),
+        asyncio.create_task(
+            consume_messages(consumer_client_2,
+                             _app.state.mongodb.get_collection("leaderboard")),
+        ),
+        asyncio.create_task(
+            consume_messages(consumer_client_3,
+                             _app.state.mongodb.get_collection("leaderboard")),
+        )
+    )
+
     yield
     await close_db_client(_app)
 

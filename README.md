@@ -11,6 +11,26 @@ This project is a solution to the **Real-Time Quiz Coding Challenge**, designed 
 
 ---
 
+## Assumptions
+### Authentication
+- The system already has user authentication in place.
+- Users are authenticated and authorized to participate in the quiz.
+- The system uses user IDs to track scores and rankings.
+### Quiz Session
+- Users join a quiz session by providing a unique `quiz_id`.
+- The quiz session is time-bound and has a fixed number of questions.
+- Users can submit answers and re-answer questions within the session.
+### Scoring
+- Question is multiple-choice with a single correct answer.
+- Each question has a fixed score.
+- Scores are updated in real-time as users submit answers.
+
+### Deployment
+- The system is deployed on a cloud platform (e.g., AWS, GCP, Azure).
+- The system uses Kubernetes for container orchestration.
+
+---
+
 ## 🛠️ Architecture
 The system follows a microservices-based architecture designed for scalability, performance, and real-time capabilities.
 
@@ -130,6 +150,8 @@ I implemented the **Leaderboard Service**, which handles:
         "user_id": "user1",
         "score": 10
     }
+
+---
 
 ## Future Improvements
 - **User Authentication**: Implement user authentication to prevent unauthorized access to quiz sessions.
