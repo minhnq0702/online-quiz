@@ -37,7 +37,8 @@ The system follows a microservices-based architecture designed for scalability, 
 ## 🔄 Data Flow
 1. Users join a quiz session by providing a `quiz_id`.
 2. Users submit answers via the **Answer Service**:
-   - If a user re-answers, the previous score is adjusted before recalculating the new score.
+    - Calulates the score based on the answer.
+    - Calulates the adjusted score if the user re-answers the question (this score will be updated to the leaderboard).
 3. The score of the answer will be produced to Kafka with format:
     ```json
     {
