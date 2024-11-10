@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import traceback
 from typing import List, TypedDict
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
@@ -39,6 +40,8 @@ async def websocket_endpoint(
     websocket: WebSocket,
     quiz_id: str,
     leaderboard_coll: depends.WsLeaderBoardCol,
+    limit: int = 10,
+    user_id: str | None = None,
 ):
     """WS stream leaderboard
 
@@ -48,17 +51,17 @@ async def websocket_endpoint(
     await websocket.accept()
     try:
         while True:
-            val: WsGetLeaderboard = await websocket.receive_json()
             try:
                 res = await get_leaderboard(
                     quiz_id,
                     leaderboard_coll,
-                    limit=val.get("limit", 10),
-                    user_id=val.get("user_id", None),
+                    limit=limit,
+                    user_id=user_id,
                 )
-                await websocket.send_json(res.model_dump())
             except Exception as e:
-                _logger.error(f"internal service error {e}")
+                _logger.error(f"internal service error {e} {traceback.format_exc()}")
+            else:
+                await websocket.send_json(res.model_dump())
             finally:
                 # FIXME Adjust the interval as needed to prevent the frontend send request data too muc
                 await asyncio.sleep(5)
