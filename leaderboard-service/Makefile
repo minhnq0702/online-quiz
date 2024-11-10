@@ -18,3 +18,6 @@ lint:
 # Run tests
 test:
 	pytest
+
+load-test:
+	k6 run tests/load_test.js
