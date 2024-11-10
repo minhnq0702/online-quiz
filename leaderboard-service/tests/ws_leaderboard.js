@@ -29,7 +29,7 @@ export default function () {
     });
     setTimeout(() => {
       socket.close();
-    }, 10000);
+    }, 8000);
     socket.on("close", () => console.log("disconnected"));
   });
 

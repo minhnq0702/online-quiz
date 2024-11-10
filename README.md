@@ -17,7 +17,7 @@ The system follows a microservices-based architecture designed for scalability, 
 ### **Components**
 1. **Quiz Service**: Manages the creation and management of quizzes.
 3. **Answer Service**: Processes user answers, calculates scores, and handles re-answered questions.
-4. **Leaderboard Service (Implemented)**: 
+4. **Leaderboard Service (I've implemented this component)**: 
    - Tracks users' scores and rankings in real-time.
    - Adjusts scores if users change their answers.
    - Provides live updates on the leaderboard.
@@ -25,12 +25,25 @@ The system follows a microservices-based architecture designed for scalability, 
 ---
 
 ## 📚 Technologies Used
+### List of technologies used in the project:
 - **Backend Framework**: FastAPI (Python)
 - **Database**: 
     - PosgreSQl: quiz question management
     - MongoDB: storing user answers and scores
 - **Message Broker**: Kafka (real-time communication between services)
 - **WebSocket**: For real-time leaderboard updates
+### Explanation of the technologies choice:
+- **FastAPI**: FastAPI is a modern, fast (high-performance). It is easy to use, fast to develop, and provides automatic interactive API documentation.
+
+- **PostgreSQL**: we need to store quiz detail info and quiz-related metadata (such as quiz questions, options, and correct answers), so PostgreSQL is strong support for structured data and relational operations.
+    - ACID properties to ensure data integrity.
+    - Consistency
+    - Relational Data Model
+
+- **Why MongoDB**: because it is highly suited for use cases where we need to handle a large volume of real-time, rapidly changing data.
+    - Document-Oriented Storage
+    - High Write Throughput
+    - Scalability and Horizontal Scaling
 
 ---
 
@@ -58,10 +71,23 @@ I implemented the **Leaderboard Service**, which handles:
 - Providing users with their current ranking on the leaderboard.
 
 ### **1. Quiz Service Details**
-#### Database Schema
+#### Database Schema (PostgreSQL)
+> **Note**: Ensure that the `quiz_id` is unique for each quiz chanllenge to avoid conflicts and ensure accurate score tracking.
+- **Quiz Table**:
     ```json
     {
-
+        "quiz_id": 1,
+        <!-- Other detail info of the quiz -->
+    }
+- **Question Table**:
+    ```json
+    {
+        "question_id": 1,
+        "quiz_id": 1,
+        "question": "What is the capital of France?",
+        "options": ["A: Paris", "B: London", "C: Berlin", "D: Rome"],
+        "correct_answer": "A",
+        "score": 10
     }
 ### **2. Answer Service Details**
 #### Databaes Schema
