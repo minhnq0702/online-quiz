@@ -64,7 +64,7 @@ async def websocket_endpoint(
                 await websocket.send_json(res.model_dump())
             finally:
                 # FIXME Adjust the interval as needed to prevent the frontend send request data too muc
-                await asyncio.sleep(5)
+                await asyncio.sleep(2)
 
     except WebSocketDisconnect:
         _logger.info("client disconnect websocket")

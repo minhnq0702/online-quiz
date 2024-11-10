@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -13,6 +14,7 @@ _logger = logging.getLogger("uvicorn")
 load_dotenv("app/.env")
 
 
+@asynccontextmanager
 async def lifespan(_app: FastAPI):
     """
     App lifespan init and close connection
