@@ -115,3 +115,26 @@ I implemented the **Leaderboard Service**, which handles:
 - Users receive updates via WebSocket periodically for:
     - Currenly leaderboard default top 10 users
     - The user's current rank
+
+### **4. Kafka Configuration**
+- **Topic**: `score_updates`
+- **Producer**: **Answer Service**
+    - Produces score updates for each user.
+- **Consumer**: **Leaderboard Service**
+    - Consumes score updates and updates the leaderboard.
+    - Broadcasts real-time updates to users.
+- Kafka score update event schema
+    ```json
+    {
+        "quiz_id": "quiz123",
+        "user_id": "user1",
+        "score": 10
+    }
+
+## Future Improvements
+- **User Authentication**: Implement user authentication to prevent unauthorized access to quiz sessions.
+- **Scalability**: Implement horizontal scaling for services to handle a large number of concurrent users.
+- **Caching Frequently Accessed Data**: Use Redis for caching to improve performance and reduce database load.
+- **Kafka Client with multiple partitions**: Implement Kafka client with multiple partitions to handle high throughput.
+- **Dockerize Services**: Dockerize services for easy deployment and scaling.
+- **Monitoring and Logging**: Implement monitoring and logging to track system performance and errors.
